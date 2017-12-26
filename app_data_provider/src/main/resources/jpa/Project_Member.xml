@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 version="2.0">
+
+    <entity class="com.yfam.yscrumy.core.entity.Project_member">
+        <table name="PROJECT_Member"/>
+        <id-class class="com.yfam.yscrumy.core.entity.PM_ID"/>
+        <attributes>
+
+            <id name="project_id" >
+               <column name="project_id"/>
+
+            </id>
+            <id name="user_id" >
+                <column name="user_id" />
+
+            </id>
+            <basic name="role">
+                <column name="role"/>
+            </basic>
+
+
+        </attributes>
+
+    </entity>
+</entity-mappings>

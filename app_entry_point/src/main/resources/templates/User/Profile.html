@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>yScrumy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/font-awesome.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/dashboard/style.css}"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+
+</head>
+<body style="color: white">
+<section th:replace="header :: header"></section>
+<div class="container">
+    <h1>Edit Profile</h1>
+    <hr/>
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-3">
+            <div class="text-center">
+                <img th:src="@{/images/avatar.jpg}" class="avatar img-circle" alt="avatar" style="  width: 200px; border-radius: 50%"/>
+                <h6>Upload a different photo...</h6>
+
+                <input type="file" class="form-control"/>
+            </div>
+        </div>
+
+        <!-- edit form column -->
+        <div class="col-md-9 personal-info">
+            <div class="alert alert-info alert-dismissable">
+                <a class="panel-close close" data-dismiss="alert">×</a>
+                <i class="fa fa-coffee"></i>
+               Hello, <strong th:text=" ${currentUser_name} "></strong>! Have a nice day...
+            </div>
+            <h3 >Personal info</h3>
+
+            <form class="form-horizontal" role="form"  th:action="@{/User/Profile}" th:object="${editProfileRequest}" method="post">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Username:</label>
+                    <div class="col-md-8">
+                        <input class="form-control " readonly="readonly" type="text" th:field="${user.username} "/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Phone number:</label>
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" th:placeholder="${user.phoneNumber}" th:field="*{phoneNumber}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Email:</label>
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" th:placeholder="${user.email}" th:field="*{email}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Current Password:</label>
+                    <div class="col-md-8">
+                        <input class="form-control" th:field="*{hashedPassword}" type="password" style="width: 93%;" id="current" onkeyup="checkcurrent();"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Password:</label>
+                    <div class="col-md-8">
+                        <div class="input-group">
+
+                            <span class="input-group-btn"> <button type="button"
+                                                                   class="btn btn-success "
+                                                                   data-toggle="collapse"
+                                                                   data-target="#editPassword"><i
+                                    class="glyphicon glyphicon-edit"></i>Change the password</button></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapse" id="editPassword">
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label ">New Password:</label>
+                        <div class="col-lg-8">
+                            <input id="password" th:field="*{newHashedPassword}" style="width: 93%;" class="form-control" type="password" onkeyup="check();"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Confirm new Password:</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" type="password" style="width: 93%;" id="confirm" onkeyup="check();"/>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-8">
+
+                        <input  type="button" onclick="checkfill();" id="btnSave" class="btn btn-primary" value="Save Changes"/>
+
+                        <input type="reset" class="btn btn-default" value="Cancel"/>
+                        <span id="message" style="color: red"></span>
+                        <span th:unless="${errorlog == null}" class="error">
+                <strong style="color : red;  font-weight: bold;">Error!</strong> <span
+                                style="color : red; font-weight: nomal;" th:text="${errorlog}"></span>
+            </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<hr/>
+
+<!-- CONTENT-WRAPPER SECTION END-->
+<section class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &copy; 2014 Yourdomain.com |<a href="http://www.binarytheme.com/" target="_blank"> Designed by :
+                binarytheme.com</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
+<script>
+    function check() {
+        if(document.getElementById("password").value!=document.getElementById("confirm").value){
+            document.getElementById("message").innerHTML="The comfirm password is not correct!";
+            document.getElementById("btnSave").setAttribute("disabled","disabled");
+        }
+        else
+        {document.getElementById("btnSave").removeAttribute("disabled");
+            document.getElementById("message").innerHTML="";
+        }
+    }
+    function checkfill() {
+        if(document.getElementById("current").value!="")
+        {
+            document.getElementById("btnSave").setAttribute("type","submit");
+        }
+        else{
+
+            document.getElementById("message").innerHTML="Please fill the current password!";
+        }
+    }
+    function checkcurrent() {
+        if(document.getElementById("current").value!=""){
+            document.getElementById("message").innerHTML="";
+        }
+    }
+</script>

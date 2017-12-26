@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>yScrumy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/font-awesome.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/dashboard/style.css}"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+
+</head>
+<body>
+<section th:replace="header :: header"></section>
+
+<div class="content-wrapper">
+    <div class="row sprint-header">
+        <div class="col-md-4 sprint-header-taskboard">
+            <h1 class="scrum-tool-heading">
+                    <span style="float:left; color: white;">
+                        <img src="/images/TeamReview.png" height="18"
+                             width="15"/>
+                        Daily Meeting
+
+                    </span>
+            </h1>
+        </div>
+    </div>
+    <div class="container">
+
+        <div class="row" style="margin-top: 40px;background: rgba(249, 249, 249, 0.77);padding: 20px;">
+            <div class="col-md-2">
+                <div class="review-box">
+                    <div class="retrovelocity qs-display-inline-block" style="background:#96e1f3;">
+                        <span class="avgvelocity"></span>
+                    </div>
+                    <div class="qs-display-inline-block qs_margin_top15">
+                        <p class="tool-small-text">Current Velocity</p>
+                        <span class="qs-font30 color3e">0</span>
+                        <span class="pts-text">pts</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="review-box">
+                    <div class="retrovelocity qs-display-inline-block" style="background:#ecd38e; padding: 5px;">
+                        <span class="avgvelocity" style="width:30px;height:21px;background-position:-25px 0"></span>
+                    </div>
+                    <div class="qs-display-inline-block qs_margin_top15">
+                        <p class="tool-small-text">Completed</p>
+                        <span class="qs-font30 color3e">0</span>
+                        <span class="pts-text">pts</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="review-box">
+                    <div class="retrovelocity qs-display-inline-block" style="background:#8cddcd;">
+                        <span class="avgvelocity" style="background-position:-55px 0"></span>
+                    </div>
+                    <div class="qs-display-inline-block qs_margin_top15">
+                        <p class="tool-small-text">Accept</p>
+                        <span class="qs-font30 color3e">0</span>
+                        <span class="pts-text">pts</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="review-box">
+                    <div class="retrovelocity qs-display-inline-block" style="background:#fdb6a8;">
+                        <span class="avgvelocity" style="background-position:-80px 0"></span>
+                    </div>
+                    <div class="qs-display-inline-block qs_margin_top15">
+                        <p class="tool-small-text">Rejected </p>
+                        <span class="qs-font30 color3e">0</span>
+                        <span class="pts-text">pts</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="review-box">
+                    <div class="Burndownchart" style="background:#9d9fa2;padding:3px">
+                        <span>Burn down Chart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row " style="    background: rgba(249, 249, 249, 0.77) !important;padding: 20px;margin-top: 3px;">
+            <div class="row">
+                <div class="col-md-2">
+
+                    <button type="button" class="btn btn-info btn-circle btn-lg" data-toggle="collapse"
+                            data-target="#createDailyMeeting" style="float:left;"><i
+                            class="glyphicon glyphicon-plus"></i></button>
+                </div>
+            </div>
+            <div class="row" style="padding:15px;">
+                <div id="createDailyMeeting" class="collapse">
+                    <div class="dashboard-panel-body">
+                        <form role="form" th:action="@{/DailyMeeting/create}" th:object="${createObject}" method="post">
+                            <div class="form-group">
+                                <div class="row">
+                                    <label>Yesterday</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea class="form-control" rows="5" type="text" th:field="*{descriptionYesterday}"
+                                               placeholder=""/>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <label>Today</label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea class="form-control" rows="5" type="text" th:field="*{descriptionToday}"
+                                                  placeholder=""/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11"></div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-info">Create</button>
+
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- CONTENT-WRAPPER SECTION END-->
+<section class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &copy; 2017 Yscrumy.com |Scrum Managerment Designed by : H2D Team - ISHQ2015
+            </div>
+
+        </div>
+    </div>
+</section>
+
+</body>
+<script th:inline="javascript">
+    function rowClicked(value) {
+        location.href = "/Dashboard/" + value;
+    }
+
+    function show() {
+        $("#createProjectCollapse").collapse('show');
+
+    }
+
+    function showMessage() {
+        BootstrapDialog.show({
+            message: 'Hi Apple!'
+        });
+    }
+
+</script>
+
+</html>

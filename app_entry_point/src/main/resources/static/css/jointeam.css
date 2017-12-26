@@ -1,0 +1,190 @@
+/*--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+--*/
+
+/* reset */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,nav ul,nav li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
+ol,ul{list-style:none;margin:0px;padding:0px;}
+blockquote,q{quotes:none;}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
+table{border-collapse:collapse;border-spacing:0;}
+/* start editing from here */
+a{text-decoration:none;}
+.txt-rt{text-align:right;}/* text align right */
+.txt-lt{text-align:left;}/* text align left */
+.txt-center{text-align:center;}/* text align center */
+.float-rt{float:right;}/* float right */
+.float-lt{float:left;}/* float left */
+.clear{clear:both;}/* clear float */
+.pos-relative{position:relative;}/* Position Relative */
+.pos-absolute{position:absolute;}/* Position Absolute */
+.vertical-base{	vertical-align:baseline;}/* vertical align baseline */
+.vertical-top{	vertical-align:top;}/* vertical align top */
+nav.vertical ul li{	display:block;}/* vertical menu */
+nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
+/*end reset*/
+
+body{
+    padding: 0;
+    margin: 0;
+    background: url(../images/bg.jpg) no-repeat 0px 0px;
+    font-family: 'Roboto', sans-serif;
+    background-size: cover;
+    background-attachment: fixed;
+}
+h1,h2,h3,h4,h5,h6{
+    margin:0;
+}
+p{
+    margin:0;
+
+}
+ul{
+    margin:0;
+    padding:0;
+}
+.wrapper {
+    text-align: center;
+}
+
+/*-- w3layouts --*/
+label{
+    margin:0;
+}
+.content{
+    padding: 4em 0;
+}
+.content h1{
+    letter-spacing: 4px;
+    margin: 60px 0;
+    color: #FFFFFF;
+    font-size: 45px;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 1px;
+    margin-bottom: 1em;
+    font-family: 'Roboto Slab', serif;
+
+
+
+}
+.wrapper {
+    text-align: center;
+}
+.caption {
+    position: absolute;
+    background: rgba(1, 1, 1, 0.4);
+    background-size: cover !important;
+    padding: 20px;
+    left: 0;
+    top: 0 !important;
+    text-align: center;
+    width: 243px;
+}
+.w3layouts-info{
+    padding:2em 0 0 0;
+    height:349px;
+}
+.w3layouts-info-top{
+    margin:0 0 1em 0;
+}
+.w3layouts-info-top h3{
+    color:#FFFFFF;
+    font-size:5em;
+    margin:0;
+    font-weight:600;
+}
+.w3layouts-info-top h4{
+    color:#FFFFFF;
+    font-size:1.5em;
+    margin:0;
+    font-weight:300;
+}
+.w3layouts-info-top p{
+    color:#FFFFFF;
+    font-size:.9em;
+    margin:1em 0 0 0;
+}
+.w3layouts-info-bottom{
+    margin:1em 0 0 0;
+}
+.w3layouts-info-bottom h5{
+    color: #FFFFFF;
+    font-size: 1.1em;
+}
+.w3layouts-info-bottom p{
+    color:#FFFFFF;
+    font-size:.9em;
+    margin:1em 0 0 0;
+}
+.w3ls-copyright{
+    margin:2em 0 0;
+    text-align:center;
+}
+.w3ls-copyright p{
+    color:#212121;
+    font-size:.9em;
+    margin:0;
+}
+.w3ls-copyright p a{
+    color:#212121;
+    text-decoration:none;
+}
+.w3ls-copyright p a:hover{
+    text-decoration:underline;
+}
+/*-- responsive --*/
+@media(max-width:600px){
+    .caption {
+        width: 196px;
+    }
+}
+@media(max-width:480px){
+    .content h1 {
+        font-size: 2em;
+    }
+    .caption {
+        width: 148px;
+    }
+    .w3layouts-info-top h3 {
+        font-size: 4em;
+    }
+}
+@media(max-width:414px){
+    .w3layouts-info-top h3 {
+        font-size: 3em;
+    }
+    .caption {
+        width: 157px;
+        padding: 5px;
+    }
+}
+@media(max-width:384px){
+    .caption {
+        width: 142px;
+    }
+    .w3layouts-info-bottom h5 {
+        font-size: 1em;
+    }
+}
+@media(max-width:320px){
+    .content {
+        padding: 2em 0;
+    }
+    .caption {
+        width: 120px;
+    }
+    .content h1 {
+        font-size: 1.6em;
+    }
+    .w3layouts-info {
+        padding: 1em 0 0 0;
+        height: 289px;
+    }
+}
+
+/*-- //responsive --*/

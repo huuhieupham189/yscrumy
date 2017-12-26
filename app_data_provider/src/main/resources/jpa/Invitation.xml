@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 version="2.0">
+
+    <entity class="com.yfam.yscrumy.core.entity.Invitation">
+        <table name="INVITATION"/>
+        <attributes>
+            <id name="id">
+                <column name="id"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="createdDate">
+                <column name="createdate"/>
+            </basic>
+            <many-to-one name="team" target-entity="com.yfam.yscrumy.core.entity.Team">
+                <join-column name="team_id" referenced-column-name="id"/>
+            </many-to-one>
+            <many-to-one name="user" target-entity="com.yfam.yscrumy.core.entity.User">
+                <join-column name="user_id" referenced-column-name="id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+</entity-mappings>

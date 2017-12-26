@@ -1,0 +1,10 @@
+description = 'Define ways to interact with application (Rest APIs, GUIs, Commandline, ...).'
+
+dependencies {
+    compile project(':app_core')
+
+    compileOnly 'javax.servlet:servlet-api:2.5'
+    compile libs.web
+
+    testCompile libs.unit_test
+}

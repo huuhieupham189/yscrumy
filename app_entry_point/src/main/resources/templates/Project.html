@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>yScrumy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/font-awesome.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/dashboard/style.css}"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+
+</head>
+<body>
+<section th:replace="header :: header"></section>
+
+<div class="content-wrapper container">
+
+    <div class="row">
+        <div class="col-md-4">
+
+
+            <div class=" ">
+                <div class="dashboard-panel-heading">
+                    <ul class="nav nav-pills">
+                        <li class="active"><a data-toggle="pill" href="#home" style="color: white">Members</a></li>
+                        <li><a data-toggle="pill" href="#menu1" style="color: white">Add</a></li>
+                        <li><a data-toggle="pill" href="#menu2" style="color: white">Update</a></li>
+                    </ul>
+
+                </div>
+
+                <div class="dashboard-panel-body text-center recent-users-sec">
+
+                    <div class="tab-content">
+                        <div id="home" class="tab-pane fade in active">
+                            <th:block th:each="member : ${listProjectMember}">
+                                <img
+                                        class="img-thumbnail avatar" th:src="@{/images/avatar.jpg}"
+                                        th:title="${member.username}"/>
+
+                            </th:block>
+                        </div>
+                        <div id="menu1" class="tab-pane fade">
+                            <th:block th:each="member : ${listMemberNotInProject}">
+                                <div class="row ">
+                                    <div class="col-md-4 col-sm-4">
+                                        <img class="img-thumbnail avatar" th:src="@{/images/avatar.jpg}"/>
+                                    </div>
+                                    <div class="col-md-8 col-sm-8"
+                                         style="text-align: center; height:102px;">
+                                        <h4 th:text="${member.username}"
+                                            style="margin-top: 25px;"></h4>
+                                        <a th:href="@{/Project/adduser(id=${member.id})}">Add This User</a>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </div>
+                        <div id="menu2" class="tab-pane fade">
+
+                            <form th:action="@{/Project/updaterole}" th:object="${updaterole}" method="post">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>User name</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr th:each="sp,id:*{list}">
+                                        <td><label th:text="${sp.username}"></label></td>
+                                        <td>
+                                            <th:block th:if="${sp.role}!='Product Owner'">
+                                                <input th:field="*{list[__${id.index}__].userid}"
+                                                       style="display: none"/>
+                                                <input th:field="*{list[__${id.index}__].username}"
+                                                       style="display: none"/>
+                                                <select th:field="*{list[__${id.index}__].role}">
+                                                    <option value="Scrum Master">Scrum Master</option>
+                                                    <option value="Dev Team">Dev Team</option>
+                                                </select>
+                                            </th:block>
+                                            <th:block th:unless="${sp.role}!='Product Owner'">
+                                                <input th:field="*{list[__${id.index}__].userid}"
+                                                       style="display: none"/>
+                                                <input th:field="*{list[__${id.index}__].username}"
+                                                       style="display: none"/>
+                                                <input th:field="*{list[__${id.index}__].role}" style="display: none"/>
+                                                <label th:text="${sp.role}"></label>
+                                            </th:block>
+                                        </td>
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+                                <button type="submit" class="btn btn-info">Update</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-8">
+            <div class=" ">
+                <div class="dashboard-panel-heading" style="padding-left: 10px; padding-top: 7px;">
+                    <img class="qs-margin-right" alt="" src="/images/PB-icon.png" width="24" height="24"/>Product Backlog Items
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-info btn-circle btn-lg" data-toggle="collapse"
+                            data-target="#createPBICollapse" style="margin-right: 10px;"><i class="glyphicon glyphicon-plus"></i></button>
+
+                </div>
+
+                <div class="dashboard-panel-body">
+                    <span th:unless="${errorpbi == null}">
+                          <div class="alert alert-danger alert-dismissable fade in">
+                                <a class="close" data-dismiss="alert" aria-label="close"
+                                   th:onclick="'javascript:show()'">&times;</a>
+                                 <strong style="color : red;  font-weight: bold;">Error!</strong> <span
+                                  style="color : red; font-weight: nomal;" th:text="${errorpbi}"></span>
+                              </div>
+                    </span>
+
+                    <div id="createPBICollapse" class="collapse">
+                        <div class="dashboard-panel-body">
+                            <form role="form" th:action="@{/PBI/create}" th:object="${createPBI}" method="post">
+                                <div class="form-group">
+                                    <label>Enter Name</label>
+                                    <input class="form-control" type="text" th:field="*{name}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input class="form-control" type="text" th:field="*{description}"/>
+                                </div>
+
+                                <button type="submit" class="btn btn-info">Create</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>Priority</th>
+                                <th>PBI name</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th style="width:90px;"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="pbi,iter : ${listPBI}">
+                                <th:block th:if="${pbi.status==T(com.yfam.yscrumy.core.entity.PBIStatus).Ready}">
+                                    <tr th:id="${pbi.id}" draggable="true" ondragstart="drag(event)"
+                                        th:onclick="'javascript:openPBIModal(\''+${pbi.id}+'\');'">
+                                        <td th:text="${pbi.priority}"></td>
+                                        <td th:text="${pbi.name}"></td>
+                                        <td th:text="${pbi.description}"></td>
+                                        <td th:text="${pbi.status}"></td>
+
+                                        <td>
+                                            <a th:href="@{/Project/del(id=${pbi.id})}">
+                                                <button type="submit" class="btn btn-info"
+                                                        style="margin-right: 10px; ">
+                                                    <img class="qs-margin-right" alt="" src="/images/Del-icon.png" width="24" height="24"/>
+                                                    Remove
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                <th:block th:unless="${pbi.status==T(com.yfam.yscrumy.core.entity.PBIStatus).Ready}">
+                                    <tr th:id="${pbi.id}"
+                                        th:onclick="'javascript:openPBIModal(\''+${pbi.id}+'\');'">
+                                        <td th:text="${pbi.priority}"></td>
+                                        <td th:text="${pbi.name}"></td>
+                                        <td th:text="${pbi.description}"></td>
+                                        <td th:text="${pbi.status}"></td>
+
+                                        <td>
+                                            <a th:href="@{/Project/del(id=${pbi.id})}">
+                                                <button type="submit" class="btn btn-info">
+                                                    <img class="qs-margin-right" alt="" src="/images/Del-icon.png" width="24" height="24"/>
+                                                    Remove
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                            </th:block>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-8">
+            <div class=" ">
+                <div class="dashboard-panel-heading" style="padding-left: 10px; padding-top: 7px;">
+                    <img class="qs-margin-right" alt="" src="/images/SL-icon.png" width="24" height="24"/>
+                    Sprint Planning
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-info btn-circle btn-lg" data-toggle="collapse"
+                            data-target="#createsprintCollapse" style="margin-right: 10px;"><i class="glyphicon glyphicon-plus"></i></button>
+
+                </div>
+
+                <div class="dashboard-panel-body">
+                    <span th:unless="${errorlog == null}">
+                          <div class="alert alert-danger alert-dismissable fade in">
+                                <a class="close" data-dismiss="alert" aria-label="close"
+                                   th:onclick="'javascript:show()'">&times;</a>
+                                 <strong style="color : red;  font-weight: bold;">Error!</strong> <span
+                                  style="color : red; font-weight: nomal;" th:text="${errorlog}"></span>
+                              </div>
+                    </span>
+
+                    <div id="createsprintCollapse" class="collapse">
+                        <div class="dashboard-panel-body">
+                            <form role="form" th:action="@{/Sprint/create}" th:object="${createsprint}" method="post">
+
+                                <div class="form-group">
+                                    <label>Enter Name</label>
+                                    <input class="form-control" type="text" th:field="*{name}"/>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <input type="date" id="date1" th:field="*{startdate}"/>
+                                    <label style="width:20%;"></label>
+                                    <label>End Date</label>
+                                    <input type="date" id="date2" th:field="*{enddate}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+
+                                    <input class="form-control" type="text" th:field="*{description}"/>
+                                </div>
+
+                                <button type="submit" class="btn btn-info">Create</button>
+
+                            </form>
+                        </div>
+
+                    </div>
+                    <span th:unless="${error == null}">
+                          <div class="alert alert-danger alert-dismissable fade in">
+                                <a class="close" data-dismiss="alert" aria-label="close"
+                                   th:onclick="'javascript:show()'">&times;</a>
+                                 <strong style="color : red;  font-weight: bold;">Error!</strong> <span
+                                  style="color : red; font-weight: nomal;" th:text="${error}"></span>
+                              </div>
+                    </span>
+                    <span th:unless="${errorrule == null}">
+                          <div class="alert alert-danger alert-dismissable fade in">
+                                <a class="close" data-dismiss="alert" aria-label="close"
+                                   th:onclick="'javascript:refresh()'">&times;</a>
+                                 <strong style="color : red;  font-weight: bold;">Error!</strong> <span
+                                  style="color : red; font-weight: nomal;" th:text="${errorrule}"></span>
+                              </div>
+                    </span>
+                    <th:block th:each="sp:${listsprint}">
+                        <div class=" ">
+                            <th:block th:if="${sp.sprintpbi}== null ">
+                                <div class="dashboard-panel-heading" style="padding-left: 10px; padding-top: 7px; margin-top: 15px;"
+                                     th:id="${sp.id}"
+                                     th:ondrop="'javascript:drop(event,\''+${sp.id}+'\');'"
+                                     ondragover="allowDrop(event)">
+                                     <h th:text="' '+${sp.name}+' : '+${sp.startdate}+' -> '+${sp.enddate}+'  --'+${sp.status}+'--'"></h>
+
+
+                                    <!-- Trigger the modal with a button -->
+                                    <button type="button" class="btn btn-info btn-circle btn-lg"
+                                            data-toggle="collapse"
+                                            th:attr="data-target='#sprintCollapse'+${sp.id}" style="margin-right: 10px;"><i
+                                            class="glyphicon glyphicon-plus" ></i></button>
+
+                                </div>
+                            </th:block>
+                            <th:block th:unless="${sp.sprintpbi}== null">
+                                <div class="dashboard-panel-heading" style="padding-left: 10px; padding-top: 7px;  margin-top: 15px;" th:id="${sp.id}">
+                                  <a th:href="@{/Project/task(id=${sp.id})}">  <h th:text="' '+${sp.name}+' : '+${sp.startdate}+' -> '+${sp.enddate}+'  --'+${sp.status}+'--'"></h>
+                                  </a>
+
+                                    <!-- Trigger the modal with a button -->
+                                    <button type="button" class="btn btn-info btn-circle btn-lg"
+                                            data-toggle="collapse"
+                                            th:attr="data-target='#sprintCollapse'+${sp.id}" style="margin-right: 10px;"><i
+                                            class="glyphicon glyphicon-plus" ></i></button>
+
+                                </div>
+                            </th:block>
+                        </div>
+                        <div th:id="'sprintCollapse'+${sp.id}" class="collapse">
+                            <div class="dashboard-panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Priority</th>
+                                            <th>PBI name</th>
+                                            <th>Description</th>
+                                            <th>Status</th>
+                                            <th style="width:90px;"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <th:block th:if="${sp.sprintpbi}!=null">
+                                            <tr th:id="${sp.sprintpbi.id}">
+                                                <td th:text="${sp.sprintpbi.priority}"></td>
+                                                <td th:text="${sp.sprintpbi.name}"></td>
+                                                <td th:text="${sp.sprintpbi.description}"></td>
+                                                <td th:text="${sp.sprintpbi.status}"></td>
+
+                                                <td>
+                                                    <a>
+                                                        <button type="submit" class="btn btn-info">
+                                                            <img class="qs-margin-right" alt="" src="/images/Del-icon.png" width="24" height="24"/>
+                                                            Remove
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                    <!--<div class="table-responsive">-->
+                    <!--<table class="table table-striped table-bordered table-hover">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                    <!--<th>Name</th>-->
+                    <!--<th>Start Date</th>-->
+                    <!--<th>End Date</th>-->
+                    <!--<th>Description</th>-->
+
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<th:block th:each="sp : ${listsprint}">-->
+                    <!--<tr >-->
+
+                    <!--<td th:text="${sp.name}"></td>-->
+                    <!--<td th:text="${sp.startdate}"></td>-->
+                    <!--<td th:text="${sp.enddate}"></td>-->
+                    <!--<td th:text="${sp.description}"></td>-->
+
+
+                    <!--</tr>-->
+                    <!--</th:block>-->
+
+
+                    <!--</tbody>-->
+                    <!--</table>-->
+                    <!--</div>-->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- CONTENT-WRAPPER SECTION END-->
+<section class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &copy; 2017 Yscrumy.com |Scrum Managerment Designed by : H2D Team - ISHQ2015
+            </div>
+
+        </div>
+    </div>
+</section>
+<div id="modal">
+    <div class="modal fade" id="modalPBI" role="dialog" th:fragment="modalsContents">
+
+
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">PBI Update</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" th:object="${updatePBI}" th:action="@{Project/update}"
+                          method="post">
+                        <div class="form-group">
+                            <input class="form-control" style="display: none;" type="text"
+                                   th:field="*{id}"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Enter Name</label>
+                            <input class="form-control" type="text"
+                                   th:field="*{name}"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input class="form-control" type="text"
+                                   th:field="*{description}"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select th:field="*{priority}">
+                                <th:block th:each="item :${listPBI}">
+                                    <option th:value="${item.priority}" th:text="${item.priority}"></option>
+                                </th:block>
+
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-info">Update
+                        </button>
+
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    function openPBIModal(id) {
+        $.ajax({
+            url: window.location.pathname + "/" + id,
+            success: function (data) {
+                $("#modal").html(data);
+                $("#modalPBI").modal("show");
+            }
+        })
+    }
+
+    function show() {
+        $("#createPBICollapse").collapse('show');
+    }
+
+    function refresh() {
+        history.back()
+    }
+
+
+</script>
+</html>
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("id", ev.target.id);
+    }
+
+    function drop(ev, spid) {
+        ev.preventDefault();
+
+        var link = "/Project/update?pbi=" + ev.dataTransfer.getData("id") + decodeURIComponent("%26") + "sprint=" + spid;
+
+        location.href = link;
+    }
+
+    Date.prototype.toDateInputValue = (function () {
+        var local = new Date(this);
+        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        return local.toJSON().slice(0, 10);
+    });
+    document.getElementById('date1').value = new Date().toDateInputValue();
+
+    document.getElementById('date2').value = new Date().toDateInputValue();
+</script>

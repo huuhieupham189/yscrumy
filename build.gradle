@@ -1,0 +1,113 @@
+description = 'Project YSCRUMY'
+
+// All projects shared configurations
+allprojects {
+    // Version information
+    group 'com.yfam.yscrumy'
+    version '0.0.1'
+
+    // Repositories
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+}
+
+// Kotlin configuration for root-project
+// because of gradle bug in centralizing sub-project buildscript in root-project
+buildscript {
+    ext.kotlin_version = '1.1.4-2'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+    }
+}
+
+// Sub-projects shared configurations
+subprojects {
+
+    // Constants
+    ext {
+        spring_version = '5.0.1.RELEASE'
+        spring_boot_version = '1.5.8.RELEASE'
+    }
+
+    // Java plugin
+    apply plugin: 'java'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    // Kotlin plugin
+    apply plugin: 'kotlin'
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlin_version}"
+    }
+
+    // Clean 'out' and 'build' directory
+    clean {
+        //noinspection GroovyAssignabilityCheck
+        delete "$project.buildDir"
+        //noinspection GroovyAssignabilityCheck
+        delete "$projectDir/out"
+        //noinspection GroovyAssignabilityCheck
+        delete "$rootProject.buildDir"
+        //noinspection GroovyAssignabilityCheck
+        delete "$rootDir/out"
+    }
+
+    // Library dependencies
+    ext.libs = [
+            unit_test       : [
+                    'junit:junit:4.12'
+            ],
+
+            common_utils    : [
+                    'org.apache.commons:commons-lang3:3.6',
+                    'commons-validator:commons-validator:1.6',
+                    'com.google.code.gson:gson:2.8.2',
+                    'org.slf4j:slf4j-api:1.7.25',
+                    'com.auth0:java-jwt:3.3.0'
+            ],
+
+            web             : [
+                    "org.springframework:spring-webmvc:${spring_version}",
+                    "org.springframework:spring-web:${spring_version}",
+                    'org.webjars:webjars-locator:0.32',
+                    'org.webjars:bootstrap:3.3.7',
+                    'org.webjars:jquery:3.2.1'
+            ],
+
+            database        : [
+                    'org.hibernate:hibernate-entitymanager:5.2.12.Final',
+                    'org.springframework.data:spring-data-jpa:2.0.1.RELEASE',
+                    'org.postgresql:postgresql:42.1.4'
+            ],
+
+            spring_boot     : [
+                    "org.springframework.boot:spring-boot-starter-web:${spring_boot_version}",
+                    "org.springframework.boot:spring-boot-starter-thymeleaf:${spring_boot_version}",
+                    "org.springframework.boot:spring-boot-starter-data-jpa:${spring_boot_version}",
+                    "org.springframework.boot:spring-boot-starter-logging:${spring_boot_version}"
+            ],
+
+            spring_boot_test: [
+                    "org.springframework.boot:spring-boot-starter-test:${spring_boot_version}"
+            ]
+    ]
+}
+
+// Wrapper configurations
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.2'
+}

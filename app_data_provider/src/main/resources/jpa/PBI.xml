@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 version="2.0">
+
+    <entity class="com.yfam.yscrumy.core.entity.PBI">
+        <table name="PBI"/>
+        <attributes>
+            <id name="id">
+                <column name="id"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="name">
+                <column name="name" unique="true"/>
+            </basic>
+            <basic name="description">
+                <column name="description"/>
+            </basic>
+            <basic name="status">
+                <column name="status"/>
+            </basic>
+            <basic name="priority">
+                <column name="priority"/>
+            </basic>
+            <many-to-one name="project" target-entity="com.yfam.yscrumy.core.entity.Project">
+                <join-column name="project_id" referenced-column-name="id"/>
+            </many-to-one>
+
+        </attributes>
+    </entity>
+</entity-mappings>

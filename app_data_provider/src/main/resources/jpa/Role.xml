@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 version="2.0">
+
+  <entity class="com.yfam.yscrumy.core.entity.Role">
+    <table name="ROLE"/>
+    <attributes>
+      <id name="id">
+        <column name="id"/>
+        <generated-value strategy="IDENTITY"/>
+      </id>
+      <basic name="permission">
+        <column name="permission"/>
+      </basic>
+      <one-to-many></one-to-many>
+    </attributes>
+  </entity>
+</entity-mappings>

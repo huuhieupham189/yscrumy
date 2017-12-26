@@ -1,0 +1,44 @@
+@charset "utf-8";
+/* CSS Document */
+
+.accordion-wrapper {
+	overflow: hidden;
+    display: block;
+    position: relative;
+    display: inline-block;
+    height: 400px !important;
+    width:1000px !important;
+}
+.slide {
+    overflow: hidden;
+    display: block;
+    -moz-box-shadow: -5px 0px 5px rgba(1, 1, 1, 0.3);
+    -webkit-box-shadow: -5px 0px 5px rgba(1, 1, 1, 0.3);
+    box-shadow: -5px 0px 5px rgba(1, 1, 1, 0.3);
+    position: absolute;
+    cursor: pointer;
+    float: left;
+    display: inline-block;
+    zoom: 1;
+    height: 480px !important;
+}
+.slide img {
+	position:relative;
+}
+@media(max-width:414px){
+	.accordion-wrapper {
+		height: 330px !important;
+	}
+}
+@media(max-width:375px){
+	.accordion-wrapper {
+		height: 325px !important;
+		width: 350px !important;
+	}
+}
+@media(max-width:320px){
+	.accordion-wrapper {
+		height: 307px !important;
+		width: 288px !important;
+	}
+}

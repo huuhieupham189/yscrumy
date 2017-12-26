@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 version="2.0">
+
+    <entity class="com.yfam.yscrumy.core.entity.Project">
+        <table name="PROJECT"/>
+        <attributes>
+            <id name="id">
+                <column name="id"/>
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="name">
+                <column name="name"/>
+            </basic>
+            <basic name="description">
+                <column name="description"/>
+            </basic>
+            <basic name="status">
+                <column name="status"/>
+            </basic>
+            <many-to-one name="team" target-entity="com.yfam.yscrumy.core.entity.Team">
+                <join-column name="team_id" referenced-column-name="id"/>
+            </many-to-one>
+            <many-to-one name="projectOwner" target-entity="com.yfam.yscrumy.core.entity.User">
+                <join-column name="po_id" referenced-column-name="id"/>
+            </many-to-one>
+            <many-to-many name="memberSet" target-entity="com.yfam.yscrumy.core.entity.User">
+                <join-table name="PROJECT_MEMBER">
+                    <join-column name="project_id" referenced-column-name="id"/>
+                    <inverse-join-column name="user_id" referenced-column-name="id"/>
+                </join-table>
+            </many-to-many>
+        </attributes>
+    </entity>
+</entity-mappings>

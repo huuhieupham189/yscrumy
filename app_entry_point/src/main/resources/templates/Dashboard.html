@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>yScrumy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/font-awesome.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/dashboard/style.css}"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+
+</head>
+<body>
+<section th:replace="header :: header"></section>
+
+<div class="content-wrapper">
+    <div class="container">
+        <div class="row pad-botm">
+            <div class="col-md-12">
+                <h4 class="header-line">DASHBOARD</h4>
+
+            </div>
+
+        </div>
+        <div id="test"></div>
+        <div class="row">
+
+            <div class="col-md-3 col-sm-3 col-xs-6 ">
+                <div class="alert  back-widget-set text-center dashboard-box" style="color: #036392">
+                    <i class="fa fa-group fa-5x"></i>
+                    <h3 th:text="${NumberOfMember} +' '+ Member"></h3>
+                    Number of Team Members
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-6 ">
+                <div class="alert  back-widget-set text-center dashboard-box" style="color: #047505">
+                    <i class="fa fa-recycle fa-5x"></i>
+                    <h3 th:text="${NumberOfProject} +' '+ Project"></h3>
+                    Number of Team's project
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-6 ">
+                <div class="alert  back-widget-set text-center dashboard-box" style="color: #8c5a04">
+                    <i class="fa fa-bars fa-5x"></i>
+                    <h3>56+ Task</h3>
+                    To Be Made For New Orders
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-6 ">
+                <div class="alert  back-widget-set text-center dashboard-box" style="color: #af0906">
+                    <i class="fa fa-briefcase fa-5x"></i>
+                    <h3>30+ Issues </h3>
+                    That Should Be Resolved Now
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row" th:switch="${select}">
+            <div class="col-md-4 col-sm-4 col-xs-12" th:case="'true'">
+                <div class="">
+                    <div class="dashboard-panel-heading">
+                        <ul class="nav nav-pills">
+                            <li><a data-toggle="pill" href="#home" style="color: white;">Team Members</a></li>
+                            <li class="active"><a data-toggle="pill" href="#menu1">Add Member</a></li>
+
+                        </ul>
+
+                    </div>
+
+                    <div class="dashboard-panel-body text-center recent-users-sec">
+
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane fade">
+                                <th:block th:each="member : ${listTeamMember}">
+                                    <img class="img-thumbnail avatar" th:src="@{/images/avatar.jpg}"
+                                         th:title="${member.username}"/>
+
+
+                                </th:block>
+
+
+                            </div>
+                            <div id="menu1" class="tab-pane fade in active">
+                                <form method="post" th:object="${search}" th:action="@{/Dashboard/search}">
+                                    <input class="form-control" style="width:60%;" th:field="*{username}" type="text"/>
+                                    <button type="submit" class="btn btn-info">
+                                        <span class="glyphicon glyphicon-search"></span> Search
+
+                                    </button>
+
+                                </form>
+                                <br/>
+                                <th:block th:each="member : ${listuser}">
+                                    <div class="row ">
+                                        <div class="col-md-4 col-sm-4">
+                                            <img class="img-thumbnail avatar" th:src="@{/images/avatar.jpg}"/>
+
+                                        </div>
+                                        <div class="col-md-8 col-sm-8"
+                                             style="text-align: center; height:102px;">
+
+                                            <h4 th:text="${member.username}"></h4>
+                                            <a style="color: #848DD7" th:href="@{/Invitation/create(id=${member.id})}">Add This User</a>
+
+                                        </div>
+                                    </div>
+
+
+                                </th:block>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12" th:case="'false'">
+                <div class="">
+                    <div class="dashboard-panel-heading">
+                        <ul class="nav nav-pills">
+                            <li class="active"><a data-toggle="pill" href="#home">Team Members</a></li>
+                            <li><a data-toggle="pill" href="#menu1" style="color: white;">Add Member</a></li>
+
+                        </ul>
+
+                    </div>
+
+                    <div class="dashboard-panel-body text-center recent-users-sec">
+
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane fade in active">
+                                <th:block th:each="member : ${listTeamMember}">
+                                    <img class="img-thumbnail avatar" th:src="@{/images/avatar.jpg}"
+                                         th:title="${member.username}"/>
+
+
+                                </th:block>
+                            </div>
+                            <div id="menu1" class="tab-pane fade">
+                                <form method="post" th:object="${search}" th:action="@{/Dashboard/search}">
+                                    <input class="form-control" style="width:80%;" th:field="*{username}" type="text"/>
+                                    <button type="submit" class="btn btn-info" style="width:15%; margin-left:1%;">
+                                        <span class="glyphicon glyphicon-search"></span>
+
+                                    </button>
+
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="">
+                    <div class="dashboard-panel-heading" style="padding-left: 10px; padding-top: 7px;">
+                        <img class="qs-margin-right" alt="" src="/images/Project-icon.png" width="24" height="24"/>
+                        Project
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-circle btn-lg" data-toggle="collapse"
+                                data-target="#createProjectCollapse" style="margin-right: 10px; "><i
+                                class="glyphicon glyphicon-plus"></i></button>
+
+                    </div>
+                    <div class="dashboard-panel-body">
+                         <span th:unless="${error == null} ">
+                             <div class="alert alert-danger alert-dismissable fade in">
+                                <a class="close" data-dismiss="alert" aria-label="close"
+                                   th:onclick="'javascript:show()'">&times;</a>
+                                 <strong style="color : red;  font-weight: bold;">Error!</strong> <span
+                                     style="color : red; font-weight: nomal;" th:text="${error}"></span>
+                              </div>
+                         </span>
+                        <div id="createProjectCollapse" class="collapse">
+                            <div class="dashboard-panel-body">
+
+                                <form role="form" th:action="@{/Project/Create}"
+                                      th:object="${createProject}" method="post">
+                                    <div class="form-group">
+                                        <h4>Enter Name</h4>
+                                        <div class="row">
+                                            <input class="form-control" type="text" Name="Projectname"
+                                                   placeholder="Write a project name"
+                                                   required=""
+                                                   th:field="*{name}" style="width:60%;margin-left:20px"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <h4>Description</h4>
+                                        <div class="row">
+                                            <input class="form-control" type="text" Name="Description"
+                                                   placeholder="Description" required=""
+                                                   th:field="*{description}" style="width:60%;margin-left: 20px"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6"></div>
+                                        <div class="col-md-3">
+                                            <button type="submit" class="btn btn-info" value="Create">Create</button>
+
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                            </div>
+
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Project Name</th>
+                                    <th>Product Owner</th>
+                                    <th>Progress</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <th:block th:each="project,iter : ${listProject}">
+
+                                    <tr th:onclick="'javascript:rowClicked(\'' + ${project.id} + '\');'">
+
+                                        <td th:text="${iter.count}"></td>
+                                        <td th:text="${project.name}">Mark</td>
+                                        <td th:text="${project.projectOwner.username}"></td>
+                                        <td>@mdo</td>
+                                        <td th:text="${project.status}"></td>
+
+                                    </tr>
+
+                                </th:block>
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="">
+                    <div class="dashboard-panel-heading" style="padding-left: 10px; padding-top: 7px;">
+                        <img class="qs-margin-right" alt="" src="/images/Description-icon.png" width="24" height="24"/>
+                        Description
+                    </div>
+                    <div class="dashboard-panel-body">
+                        <ul class="media-list">
+
+                            <li class="media">
+
+                                <div class="media-body" style="width:300px;">
+                                    <form th:action="@{/Team/Edit}" method="post" th:object="${editTeam}">
+                                        <div class="row">
+                                            <textarea cols="40" rows="5" type="text" class="form-control"
+                                                      th:field="${editTeam.description}"/>
+                                            <div class="col-md-9"></div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-info" type="submit" title="Save"
+                                                        style="width:70px; padding:0px; height:25px;"><i
+                                                        class="glyphicon glyphicon-floppy-disk"></i></button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+
+
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <!--<div><a th:href="@{/Team/Del}">-->
+                <!--<button class="btn btn-success"></button>-->
+                <!--</a></div>-->
+            </div>
+            <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="alert alert-info text-center">
+                    <h3> IMPORTANT NOTICE</h3>
+                    <hr/>
+                    <i class="fa fa-warning fa-4x"></i>
+                    <p>
+                        I wanna follow her where she goes
+                        <br/>
+                        I think about her and she knows it
+                        <br/>
+                        I wanna let it take control
+                        <br/>
+                        'Cause everytime that she gets closer
+                        <br/>
+                    </p>
+                    <hr/>
+                    <a href="#" class="btn btn-info">Read Full Detalis</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="">
+                    <div class="dashboard-panel-heading" style="padding-left: 10px; padding-top: 7px;">
+                        <img class="qs-margin-right" alt="" src="/images/AL-icon.png" width="24" height="24"/> Activity
+                        Log
+                    </div>
+                    <div class="dashboard-panel-body">
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="">
+                    <div class="dashboard-panel-heading" style="padding-left: 10px; padding-top: 7px;">
+                        <img class="qs-margin-right" alt="" src="/images/Diagram.png" width="24" height="24"/> Task
+                        Summary
+                    </div>
+                    <div class="dashboard-panel-body">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>To do</th>
+                                <th>In Progress</th>
+                                <th>Test</th>
+                                <th>Completed</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <th:block th:each="member,iter : ${taskSumList}">
+
+                                <tr >
+
+                                    <td th:text="${member.user.username}"></td>
+                                    <td th:text="${member.todo}"></td>
+                                    <td th:text="${member.inprogress}"></td>
+                                    <td th:text="${member.testing}"></td>
+                                    <td th:text="${member.completed}"></td>
+
+
+                                </tr>
+
+                            </th:block>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- CONTENT-WRAPPER SECTION END-->
+<section class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &copy; 2017 Yscrumy.com |Scrum Managerment Designed by : H2D Team - ISHQ2015
+            </div>
+
+        </div>
+    </div>
+</section>
+
+</body>
+<script th:inline="javascript">
+    function rowClicked(value) {
+        location.href = "/Dashboard/" + value;
+    }
+
+    function show() {
+        $("#createProjectCollapse").collapse('show');
+
+    }
+
+    function showMessage() {
+        BootstrapDialog.show({
+            message: 'Hi Apple!'
+        });
+    }
+
+</script>
+
+</html>

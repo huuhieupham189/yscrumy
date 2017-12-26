@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>yScrumy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../static/css/style.css" th:href="@{/css/style.css}" />
+    <link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+    <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+</head>
+<body>
+<div  th:replace="header::header"/>
+
+<div class="container">
+    <h1>Create a Team:</h1>
+
+
+    <form th:action="@{/addteam}"
+          th:object="${teamform}" method="POST">
+        ID:
+        <input type="text" th:field="*{id}" />
+        <br/>
+        Name:
+        <input type="text" th:field="*{name}" />
+        <br/>
+        <input type="submit" value="Create" />
+    </form>
+
+    <br/>
+
+
+
+
+</div>
+<div th:replace="footer :: footer"/>
+</body>
+</html>

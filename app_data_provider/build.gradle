@@ -1,0 +1,9 @@
+description = 'Access data from whatever source (database, 3rd party, network, ...).'
+
+dependencies {
+  compile project( ':app_core' )
+
+  compile libs.database
+
+  testCompile libs.unit_test
+}

@@ -1,0 +1,361 @@
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+
+        <title>yScrumy</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}"/>
+        <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/font-awesome.css}"/>
+        <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/dashboard/style.css}"/>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+        <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+        <link rel="stylesheet" th:href="@{/js/standalone.css}"/>
+        <link rel="stylesheet" th:href="@{/js/clockpicker.css}"/>
+        <script th:src="@{/js/clockpicker.js}"></script>
+
+
+    </head>
+    <body>
+    <section th:replace="header :: header"></section>
+
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row sprint-header">
+                <div class="col-md-5 sprint-header-taskboard">
+                    <h1 class="scrum-tool-heading">
+                        <span style="float:left; color: white">
+                            <img src="/images/SL-icon.png" height="auto"
+                                 width="24"/>
+                            Taskboard
+
+                        </span>
+                    </h1>
+                </div>
+
+                <th:block th:if="${check==true}">
+                <div class="col-md-5 sprint-header-taskboard">
+                    <a id="" th:href="@{/Taskboard/sprintcompleted}" title="complete sprint" class="btn btn-blue btn-complete">Complete this sprint</a>
+                </div>
+                </th:block>
+
+            </div>
+            <div class="row" style="margin-top: 40px;">
+                <div class="col-md-3 taskboard-headerbox">
+                    <div class="title">
+                        To Do
+                        <span class=" badge badge-count badgetodo">
+                            <span class="countLane" th:text="${numbertodo}">3</span> of <span class="countLane" th:text="${total}">3</span>
+                        </span>
+                        <button style="width:28px; height:28px;" type="button" class="btn btn-success btn-circle btn-lg" data-toggle="collapse"
+                                data-target="#addTask"><i class="glyphicon glyphicon-plus"></i></button>
+                    </div>
+
+                </div>
+                <div class="col-md-3 taskboard-headerbox">
+                    <div class="title">
+                        In Progress
+                        <span class=" badge badge-count badgeinprogess">
+                            <span class="countLane" th:text="${numberinprogress}">3</span> of <span class="countLane" th:text="${total}">3</span>
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="col-md-3 taskboard-headerbox">
+                    <div class="title">
+                        Test
+                        <span class=" badge badge-count badgetest">
+                            <span class="countLane" th:text="${numbertest}">3</span> of <span class="countLane" th:text="${total}">3</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3 taskboard-headerbox">
+                    <div class="title">
+                        Completed
+                        <span class=" badge badge-count badgecomplete">
+                           <span class="countLane" th:text="${numbercompleted}">3</span> of <span class="countLane" th:text="${total}">3</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <span th:unless="${errorlog == null}">
+                              <div class="alert alert-danger alert-dismissable fade in">
+                                    <a class="close" data-dismiss="alert" aria-label="close"
+                                       th:onclick="'javascript:refresh()'">&times;</a>
+                                     <strong style="color : red;  font-weight: bold;">Error!</strong> <span
+                                      style="color : red; font-weight: nomal;" th:text="${errorlog}"></span>
+                                  </div>
+                        </span>
+            <div class="row" th:if="${errorlog==null}">
+                <div class="col-md-3 tasklist">
+                    <!--add Task collapse-->
+                    <div id="addTask" class="collapse addtaskCollapse">
+                        <div class="panel-body addtaskCollapse-body">
+                            <form role="form" method="post" th:object="${createtask}" th:action="@{/Taskboard/create}">
+                                <div class="form-group">
+                                    <label>Enter Name</label>
+                                    <input class="form-control" type="text" th:field="*{name}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input class="form-control" type="text" th:field="*{description}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Estimation</label>
+                                    <div class="input-group clockpicker">
+                                        <input type="text" class="form-control" value="09:30" th:field="*{estimation}"/>
+                                        <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Create</button>
+                            </form>
+                        </div>
+
+                    </div>
+                    <!-- List Task-->
+                    <div ondrop="drop(event)" ondragover="allowDrop(event)" th:id="Todo" class="tasklist-li">
+                        <th:block th:each="task:${tasktodo}">
+                            <div th:id="${task.id}" draggable="true" ondragstart="drag(event)" style="display: block"
+                                 class="left-border-blue taskboard-story-box">
+
+                                <div class="row">
+                                    <div class="col-md-7"></div>
+                                    <div class="col-md-5"><a style="color: grey" th:onclick="'javascript:openPBIModal(\''+${task.id}+'\');'"> <i class="glyphicon glyphicon-edit"></i></a></div>
+
+                                </div>
+                                <h6 th:text="${task.name}"></h6>
+                                <i class="glyphicon glyphicon-time" style="float:left;margin-right:1px;"> </i><h6 th:text="${task.estimation}"> </h6>
+                                <h6 style="color:#13a5dd;" th:text="${task.status}"></h6>
+
+                            </div>
+                        </th:block>
+
+                    </div>
+
+                </div>
+                <div id="Processing" class="col-md-3 tasklist">
+                    <div th:if="${taskinprogress.size()>0}" class="tasklist-li">
+                        <!--<div class="left-border-orange taskboard-story-box"></div>-->
+                        <th:block th:each="task:${taskinprogress}">
+
+                            <div th:id="${task.id}" draggable="true" ondragstart="drag(event)" style="display: block"
+                                 class="left-border-orange taskboard-story-box">
+
+                                <div class="row">
+                                    <div class="col-md-7"></div>
+                                    <div class="col-md-5"><a style="color: grey;"  th:onclick="'javascript:openPBIModal(\''+${task.id}+'\');'"> <i class="glyphicon glyphicon-edit"></i></a></div>
+
+                                </div>
+                                <h6 th:text="${task.name}"></h6>
+                                <i class="glyphicon glyphicon-time" style="float:left; margin-right:1px;"></i><h6 th:text="${task.estimation}"> </h6>
+                                <h6 style="color:#f09e36;" th:text="${task.status}"></h6>
+
+
+                            </div>
+                        </th:block>
+                    </div>
+                    <div th:unless="${taskinprogress.size()>0}" ondrop="drop(event)" ondragover="allowDrop(event)"
+                         th:id="InProgress" class="tasklist-li">
+
+                    </div>
+                </div>
+                <div class="col-md-3 tasklist">
+                    <div ondrop="drop(event)" ondragover="allowDrop(event)" th:id="Test" class="tasklist-li">
+                        <!--<div class="left-border-darkred taskboard-story-box"></div>-->
+                        <th:block th:each="task:${tasktest}">
+                            <div th:id="${task.id}" class="left-border-darkred taskboard-story-box">
+
+                                <div class="row" th:if="${task.tester}==null">
+                                    <div class="col-md-7"></div>
+                                    <div class="col-md-5"><a style="color: grey;"  th:onclick="'javascript:openPBIModal(\''+${task.id}+'\');'"> <i class="glyphicon glyphicon-edit"></i></a></div>
+
+                                </div>
+                                <div class="row" th:unless="${task.tester}==null">
+                                    <th:block th:if="${task.tester.id==currentuserid}">
+                                    <div class="col-md-6"><a style="color: darkred;" th:href="@{/Taskboard/bug(id=${task.id})}"> <i class="glyphicon glyphicon-remove"></i></a></div>
+                                    <div class="col-md-6"><a style="color: forestgreen;" th:href="@{/Taskboard/completed(id=${task.id})}"> <i class="glyphicon glyphicon-ok"></i></a></div>
+                                    </th:block>
+                                    <th:block th:unless="${task.tester.id==currentuserid}">
+                                        <div class="col-md-7"></div>
+                                        <div class="col-md-5"><a style="color: grey;" th:onclick="'javascript:openPBIModal(\''+${task.id}+'\');'"> <i class="glyphicon glyphicon-edit"></i></a></div>
+
+                                    </th:block>
+                                </div>
+                                <h6 th:text="${task.name}"></h6>
+                                <i class="glyphicon glyphicon-time" style="float:left;margin-right:1px;"> </i><h6 th:text="${task.estimation}"> </h6>
+                                <h6 style="color:#8b0000;" th:text="${task.status}"></h6>
+                            </div>
+
+                        </th:block>
+                    </div>
+                </div>
+                <div class="col-md-3 tasklist">
+                    <div th:id="Completed" class="tasklist-li">
+                        <!--<div class="left-border-green taskboard-story-box"></div>-->
+                        <th:block th:each="task:${taskcompleted}">
+                            <div th:id="${task.id}" class="left-border-green taskboard-story-box">
+                                <div class="row">
+                                    <div class="col-md-7"></div>
+                                    <div class="col-md-5">
+                                        <a style="color: grey;"  th:onclick="'javascript:openPBIModal(\''+${task.id}+'\');'"> <i class="glyphicon glyphicon-edit"></i></a></div>
+
+                                </div>
+                                <h6 th:text="${task.name}"></h6>
+                                <i class="glyphicon glyphicon-time" style="float:left;margin-right:1px;" > </i><h6 th:text="${task.estimation}"> </h6>
+                                <h6 style="color:#709f46;" th:text="${task.status}"></h6>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- CONTENT-WRAPPER SECTION END-->
+    <section class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    &copy; 2017 Yscrumy.com |Scrum Managerment Designed by : H2D Team - ISHQ2015
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <div id="modal">
+        <div class="modal fade" id="modalTask" role="dialog" th:fragment="modalsContents">
+
+
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            &times;
+                        </button>
+                        <h4 class="modal-title">Task Update</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" th:object="${taskupdate}"  th:action="@{/Taskboard/update}"
+                              method="post">
+                            <div class="form-group">
+                                <input class="form-control" th:field="*{id}" style="display: none;" type="text"/>
+                            </div>
+                            <div class="form-group">
+                                <label >Enter Name</label>
+                                <input class="form-control" th:field="*{name}"  type="text"
+                                       />
+                            </div>
+                            <div class="form-group">
+                                <label>Estimation</label>
+                                <div class="input-group clockpicker">
+                                    <input type="text" class="form-control"  th:field="*{estimation}"/>
+                                    <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input class="form-control" th:field="*{description}"  type="text"
+
+                                />
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>Tester</label>
+                                <select th:field="*{tester}" >
+                                    <th:block th:each="item :${listprojectmember}">
+                                        <option th:value="${item.id}" th:text="${item.username}"></option>
+                                    </th:block>
+
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-info">Update
+                            </button>
+
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </body>
+
+    <script th:inline="javascript">
+        function rowClicked(value) {
+            location.href = "/Dashboard/" + value;
+        }
+
+        function show() {
+            $("#createProjectCollapse").collapse('show');
+
+        }
+
+        function showMessage() {
+            BootstrapDialog.show({
+                message: 'Hi Apple!'
+            });
+        }
+
+
+
+        $('.clockpicker').clockpicker();
+
+        function refresh() {
+            history.back()
+        }
+        function openPBIModal(id) {
+            $.ajax({
+                url: window.location.pathname + "/" + id,
+                success: function (data) {
+                    $("#modal").html(data);
+                    $("#modalTask").modal("show");
+                    $('.clockpicker').clockpicker();
+                }
+            })
+        }
+    </script>
+    <script>
+        function allowDrop(ev) {
+            if (ev.target.id === 'InProgress' || ev.target.id === 'Todo' || ev.target.id === 'Test' || ev.target.id === 'Completed')
+                ev.preventDefault();
+
+
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+
+
+            if (ev.target.id === 'InProgress' || ev.target.id === 'Todo' || ev.target.id === 'Test' || ev.target.id === 'Completed') {
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("text");
+
+                ev.target.appendChild(document.getElementById(data));
+            }
+
+            var link = "/Taskboard/updatestatus?tid=" + data + decodeURIComponent("%26") + "status=" + ev.target.id;
+            location.href = link;
+
+        }
+
+
+    </script>
+    </html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>yScrumy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <script th:src="@{js/jquery-2.1.4.min.js}"></script>
+    <script th:src="@{js/easyResponsiveTabs.js}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#horizontalTab').easyResponsiveTabs({
+                type: 'default', //Types: default, vertical, accordion
+                width: 'auto', //auto or any width like 600px
+                fit: true   // 100% fit in a container
+            });
+        });
+    </script>
+    <link rel="stylesheet" type="text/css" media="all" href="/static/css/welcome.css" th:href="@{/css/welcome.css}"/>
+    <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet"/>
+
+
+</head>
+<body>
+<!-- main-content -->
+<h1>Create or Join a Team?</h1>
+
+<div class="container w3layouts agileits">
+
+    <div class="login w3layouts agileits">
+        <div class="login-left">
+            <div class="logo">
+                <img class="logo-img" src="images/avatar.jpg" alt=""/>
+                <h2 style="text-align: center;"  th:text="${session.currentUser_username}">
+
+                </h2>
+                <div>
+
+                    <a th:href="@{/User/LogOut}" style="border-radius: 0px; border-width: 0px;">
+                       Logout!
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="register w3layouts agileits">
+        <div class="login-right">
+            <div class="sap_tabs">
+                <div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
+                    <ul class="resp-tabs-list">
+                        <li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>Create</span></li>
+                        <li class="resp-tab-item " aria-controls="tab_item-1" role="tab">
+                            <label>|</label><span>Join</span></li>
+                        <div class="clear"></div>
+                    </ul>
+                    <div class="resp-tabs-container">
+                        <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
+                            <div class="login-top sign-top">
+                                <form th:action="@{/Team/Create}" th:object="${createRequest}" method="post">
+                                    <p style="height: 25px;"></p>
+                                    <p>To create a new team, give it a name and a short description : </p>
+                                    <input type="text" placeholder="Team Name" required="" th:field="*{name}"/>
+                                    <input type="text" placeholder="Description" required="" th:field="*{description}"/>
+                                    <span th:unless="${errorcreate == null}" class="error">
+                                        <strong style="color : red;  font-weight: bold;">Error!</strong> <span
+                                            style="color : red; font-weight: nomal;" th:text="${errorcreate}"></span>
+                                    </span>
+                                    <div class="send-button w3layouts agileits">
+                                        <input type="submit" value="CREATE"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1">
+                            <div class="login-top">
+                                <div class="table-responsive">
+                                    <br/>
+                                    <th:block th:each="item:${listinvitation}">
+                                        <div style="color: white; text-align: center">
+                                            <div class="col" style="width:30%; float:left; margin-top: 15px;">
+                                                <h4 th:text="${item.team.name}"></h4>
+                                            </div>
+                                            <div class="col" style="width:30%; float:left;margin-top: 5px;">
+                                                <h4>Date Invited</h4>
+                                                <h5 th:text="${item.createdDate}"></h5>
+                                            </div>
+                                            <div class="col">
+
+                                                <a th:href="@{/Team/Accept(id=${item.team.id})}">
+                                                    <img src="images/acceptInvi.png" alt="Accept Invite"/>
+                                                </a>
+
+
+
+                                            </div>
+                                        </div>
+                                        <br/>
+                                    </th:block>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+
+
+</body>
+</html>

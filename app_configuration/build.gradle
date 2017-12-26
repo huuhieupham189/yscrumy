@@ -1,0 +1,33 @@
+description = 'Wire modules together and make the application.'
+
+// Config build script for spring boot application
+buildscript {
+  repositories {
+    jcenter()
+  }
+
+  dependencies {
+    classpath( "org.springframework.boot:spring-boot-gradle-plugin:${ spring_boot_version }" )
+  }
+}
+
+// Plugin for spring boot build
+apply plugin: 'org.springframework.boot'
+
+// Output jar
+jar {
+  baseName = "${ rootProject.name }"
+  version = "${ rootProject.version }"
+  destinationDir = file( "$rootProject.buildDir/bin" )
+}
+
+// Dependencies
+dependencies {
+  compile project( ':app_core' )
+  compile project( ':app_data_provider' )
+  compile project( ':app_entry_point' )
+
+  compile libs.spring_boot
+
+  testCompile libs.spring_boot_test
+}

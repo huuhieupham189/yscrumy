@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>yScrumy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/font-awesome.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/dashboard/style.css}"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+    <script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+
+</head>
+<body>
+<section class="menu-section" th:fragment="header">
+    <div class="container">
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="navbar-collapse collapse ">
+                    <ul id="menu-top" class="nav navbar-nav navbar-right" style="font-size: 20px;">
+                        <li><a th:href="@{/Dashboard}" class="menu-top-active"><label>DASHBOARD</label></a></li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" id="ddlmenuItem" data-toggle="dropdown"><label th:text="${currentUser_name} "></label> <i
+                                    class="fa fa-angle-down"></i></a>
+                            <ul class="dropdown-menu header-dropdown" role="menu" aria-labelledby="ddlmenuItem">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" th:href="@{User/Profile}"><i
+                                        class="glyphicon glyphicon-user"></i> PROFILE</a>
+                                </li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" th:href="@{/User/LogOut}">
+                                    <i class="glyphicon glyphicon-off"></i> LOG
+                                    OUT</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" th:href="@{/User/LeaveTeam}">
+                                    <i class="glyphicon glyphicon-send"></i> Leave Team</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- MENU SECTION END-->
+
+</body>
+</html>
